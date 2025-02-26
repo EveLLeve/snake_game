@@ -10,12 +10,12 @@ def start_window():
     screen1.fill((255, 255, 255))
     button_play = pygame.Surface([150, 75])
     button_play.fill((0, 235, 196))
-    font = pygame.font.Font(None, 50)
-    text = font.render("Играть", True, (0, 0, 100))
-    button_play.blit(text, (20, 20))
-    text1 = font.render("Змейка", True, (0, 0, 0))
+    font1 = pygame.font.Font(None, 50)
+    text11 = font1.render("Играть", True, (0, 0, 100))
+    button_play.blit(text11, (20, 20))
+    text12 = font1.render("Змейка", True, (0, 0, 0))
     screen1.fill((255, 255, 255))
-    screen1.blit(text1, (40, 30))
+    screen1.blit(text12, (40, 30))
     screen1.blit(button_play, (25, 100))
     while True:
         for event1 in pygame.event.get():
@@ -150,6 +150,11 @@ class Board:
             x = self.left
 
 
+def save_res(res):
+    with open('results.txt', 'w') as f:
+        f.write(str(res))
+
+
 def is_eating(sna, ap):
     if ap[2][0] <= sna.snake_body[0][0] <= ap[2][0] + 29 and ap[2][1] <= sna.snake_body[0][1] <= ap[2][1] + 29:
         return True
@@ -173,9 +178,11 @@ while running:
     while game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                save_res(len(snake.snake_body))
                 running = False
                 game_over = False
             elif event.type == pygame.KEYDOWN:
+                save_res(len(snake.snake_body))
                 game_over = False
                 snake = Snake()
                 x_change, y_change = 0, 0
