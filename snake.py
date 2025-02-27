@@ -30,7 +30,7 @@ def start_window():
 running = start_window()
 
 
-def load_image(name, size=(30, 30), colorkey=None):
+def load_image(name, size1=(30, 30), colorkey=None):
     fullname = os.path.join('data', name)
     image = pygame.image.load(fullname)
     if colorkey is not None:
@@ -40,7 +40,7 @@ def load_image(name, size=(30, 30), colorkey=None):
         image.set_colorkey(colorkey)
     else:
         image = image.convert_alpha()
-    image = pygame.transform.scale(image, size)
+    image = pygame.transform.scale(image, size1)
     return image
 
 
@@ -133,9 +133,9 @@ class Board:
 
     def render(self, s):
         x, y = self.left, self.top
-        for i in range(len(self.board)):
-            for j in range(len(self.board[i])):
-                if i % 2 == 0:
+        for m in range(len(self.board)):
+            for j in range(len(self.board[m])):
+                if m % 2 == 0:
                     if j % 2 == 0:
                         pygame.draw.rect(s, (102, 255, 255), (x, y, self.cell_size, self.cell_size), 20)
                     else:
@@ -232,11 +232,15 @@ while running:
     x0, y0 = x1, y1
     if 0 > x0 or x0 > 450 or 60 > y0 or y0 > 510:
         game_over = True
+    if game_over:
+        continue
     for i in range(1, len(snake.snake_body)):
         snake.snake_body[i], x1, y1, n = ((x1, y1, n), snake.snake_body[i][0], snake.snake_body[i][1],
                                           snake.snake_body[i][2])
         if x0 == x1 and y0 == y1:
             game_over = True
+    if game_over:
+        continue
     snake.snake_body[0] = (snake.snake_body[0][0] + x_change, snake.snake_body[0][1] + y_change, k)
     if not apple[1]:
         apple[1] = True
